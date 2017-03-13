@@ -1,5 +1,6 @@
-package com.wifibyteschallenge.android;
+package com.wifibyteschallenge.android.activities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,11 +12,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.wifibyteschallenge.android.R;
 import com.wifibyteschallenge.android.utils.Utils;
 
 import butterknife.BindView;
@@ -70,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //IF THE VALIDATION IS OK, LAUNCH THE NEW ACTIVITY TO SHOW THE POSTS
                         if(task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this,"USERUID: "+task.getResult().getUser().getUid(),Toast.LENGTH_SHORT).show();
+                          launchPostActivity();
                         }else{
                             //THROW THE EXCEPTION AND SHOW MESSAGE FOR WRONG EMAIL OR WRONG PASSWORD
                             try {
@@ -86,6 +85,13 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void launchPostActivity() {
+        startActivity(new Intent(LoginActivity.this,PostActivity.class));
+        finish();
+        return;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
