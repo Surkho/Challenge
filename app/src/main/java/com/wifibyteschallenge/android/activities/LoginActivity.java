@@ -1,9 +1,6 @@
 package com.wifibyteschallenge.android.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,13 +23,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity {
+
+    //FIREBASE OBJECT
     private FirebaseAuth fbAuth;
+
+    //VIEW OBJECTS (USE OF BUTTERKNIFE)
     @BindView(R.id.edPassword)
     EditText edPassword;
     @BindView(R.id.edUser)
     EditText edUser;
     @BindView(R.id.loginProgressBar)
     ProgressBar progressLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,17 +42,19 @@ public class LoginActivity extends AppCompatActivity {
         fbAuth = FirebaseAuth.getInstance();
         ButterKnife.bind(this);
     }
-    //BUTTON LOGIN CLICK EVENT
+    /*  BUTTON LOGIN CLICK EVENT (BUTTERKNIFE)
+    * HERE CHECKING USER AND PASS WITH VALID FORMAT AND CALL THE METHOD TO GET UID.*/
     @OnClick(R.id.btnLogin)
     public void OnClick(){
-        //CHECKING USER AND PASS WITH VALID FORMAT AND CALL THE METHOD TO GET UID.
+        //SHOW DIALOG
         progressLogin.setVisibility(View.VISIBLE);
+        //GET USER AND PASS FROM EDITTEXT
         String user,pass;
         user = edUser.getText().toString();
         pass = edPassword.getText().toString();
-
+        //CONDITION TO START THE LOGIN OR HIDE PROGRESSBAR AND SHOW ERROR MESSAGE ON THE EDITTEXT.
         if(Utils.isValidEmail(user) && Utils.isValidPassword(pass))
-           getUserUID(user,pass);
+           startLoginWithFirebase(user,pass);
         else{
             progressLogin.setVisibility(View.GONE);
             if (!Utils.isValidEmail(user) && !Utils.isValidEmail(pass))
@@ -69,7 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     };
-    private void getUserUID(String user,String password){
+    //METHOD TO START THE LOGIN WITH PASS AND USER
+    private void startLoginWithFirebase(String user, String password){
         fbAuth.signInWithEmailAndPassword(user,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -94,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    //METHOD TO LAUNCH POST ACTIVITY WHEN THE LOGIN IS OK!
     private void launchPostActivity() {
         startActivity(new Intent(LoginActivity.this,PostActivity.class));
         finish();

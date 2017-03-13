@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wifibyteschallenge.android.R;
+import com.wifibyteschallenge.android.adapters.RecyclerPostAdapter;
 import com.wifibyteschallenge.android.model.Posts;
 import com.wifibyteschallenge.android.utils.Utils;
 
@@ -29,27 +32,30 @@ import butterknife.ButterKnife;
 
 public class PostActivity extends AppCompatActivity {
 
+    //FIREBASE OBJECTS AND VARIABLES
     private FirebaseUser fireUser;
     private DatabaseReference fireReference;
     private final String USER_POST_PATH = "user-posts";
     private String USER_UID;
 
+    //VIEW OBJECTS (USE OF BUTTERKNIFE)
     @BindView(R.id.recyclerView)
-    private RecyclerView recyclerView;
+    RecyclerView recyclerView;
+    @BindView(R.id.postProgressBar)
+    ProgressBar progressPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         ButterKnife.bind(this);
-
+        //GET FIREBASE AUTH INSTANCE AND GET USERUID
         FirebaseAuth.getInstance().addAuthStateListener(fireAuthListener);
         fireUser = FirebaseAuth.getInstance().getCurrentUser();
         USER_UID = fireUser.getUid();
-
+        //GET DATABAE REFERENCE AND CREATION OF LIST OF POST
         fireReference = FirebaseDatabase.getInstance().getReference();
-        if(fireReference!= null)
-            readAndCreateListOfPosts();
+        readAndCreateListOfPosts();
 
     }
     //FIREBASE LISTENER
@@ -70,6 +76,7 @@ public class PostActivity extends AppCompatActivity {
 
     //FUNCTION TO READ DATABASE AND CREATE LIST OF POSTS
     private  void readAndCreateListOfPosts(){
+        progressPost.setVisibility(View.VISIBLE);
         fireReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -84,14 +91,19 @@ public class PostActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                //IF WE HAVE ERROR, HIDE THE PROGRESS AND CREATE A MESSAGE WITH THE ERROR CODE
+                progressPost.setVisibility(View.GONE);
                 createDatabaseErrorMessage(databaseError.getCode());
             }
         });
     }
     //METHOD TO BUILD THE RECYCLERVIEW WITH THE ARRAYLIST OF POSTS
     private void buildListOfPosts(List<Posts> posts) {
+        progressPost.setVisibility(View.GONE);
+        RecyclerPostAdapter postAdapter = new RecyclerPostAdapter(posts);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(postAdapter);
     }
 
     //FUNCTION TO CREATE A MESSAGE WITH DATABASE ERROR.

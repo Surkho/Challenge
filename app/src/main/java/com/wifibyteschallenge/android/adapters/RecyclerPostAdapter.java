@@ -7,14 +7,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wifibyteschallenge.android.R;
+import com.wifibyteschallenge.android.model.Posts;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 /**
  * Created by juanj on 13/03/2017.
  */
 
 public class RecyclerPostAdapter extends RecyclerView.Adapter<RecyclerPostAdapter.PostHolder> {
+    private List<Posts> listOfItems;
+
+    public RecyclerPostAdapter(List<Posts> posts) {
+        listOfItems = posts;
+    }
 
     @Override
     public RecyclerPostAdapter.PostHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -24,13 +32,14 @@ public class RecyclerPostAdapter extends RecyclerView.Adapter<RecyclerPostAdapte
     }
 
     @Override
-    public void onBindViewHolder(RecyclerPostAdapter.PostHolder holder, int position) {
-
+    public void onBindViewHolder(RecyclerPostAdapter.PostHolder postItem, int index) {
+        postItem.textTitle.setText(listOfItems.get(index).getTitle());
+        postItem.textBody.setText(listOfItems.get(index).getBody());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return listOfItems.size();
     }
 
     public class PostHolder extends RecyclerView.ViewHolder {

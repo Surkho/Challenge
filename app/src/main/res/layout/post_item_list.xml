@@ -1,34 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:focusable="true"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:paddingLeft="@dimen/cardview_horizontal_margin"
+    android:paddingRight="@dimen/cardview_horizontal_margin"
+    android:paddingTop="@dimen/cardview_vertical_margin"
+    android:paddingBottom="@dimen/cardview_vertical_margin"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/titlePost"
-        android:text="Title"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:layout_alignParentTop="true"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="80dp"
+        android:elevation="@dimen/cardview_default_elevation"
+       >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/cardview_horizontal_margin"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/bodyPost"
-        android:textColor="@color/primaryText"
-        android:layout_width="match_parent"
-        android:text="Post text"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titlePost"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="13dp" />
+            <TextView
+                android:id="@+id/titlePost"
+                android:text="Title"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+            android:id="@+id/bodyPost"
+            android:textColor="@color/primaryText"
+            android:layout_width="match_parent"
+            android:text="Post text"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titlePost"
+            android:layout_alignParentStart="true"
+           />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 
 </RelativeLayout>

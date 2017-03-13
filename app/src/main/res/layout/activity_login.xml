@@ -20,6 +20,7 @@
         android:ems="10"
         android:hint="@string/ed_email"
         android:textColorHint="@color/lightPrimaryColor"
+        android:textColor="@android:color/white"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
         android:id="@+id/edUser"
@@ -32,6 +33,7 @@
         android:ems="10"
         android:hint="@string/ed_pass"
         android:textColorHint="@color/lightPrimaryColor"
+        android:textColor="@android:color/white"
         android:layout_below="@+id/edUser"
         android:layout_alignParentStart="true"
         android:layout_marginTop="29dp"
@@ -65,9 +67,8 @@
     <ImageView
         app:srcCompat="@drawable/logo_wifibytes"
         android:id="@+id/imageView"
+        android:layout_centerHorizontal="true"
         android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="28dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="120dp" />
 
 </RelativeLayout>
