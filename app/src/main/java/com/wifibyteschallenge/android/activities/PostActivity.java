@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class PostActivity extends AppCompatActivity {
 
     //FIREBASE OBJECTS AND VARIABLES
     private FirebaseUser fireUser;
+    private FirebaseAuth fireAuth;
     private DatabaseReference fireReference;
     private final String USER_POST_PATH = "user-posts";
     private String USER_UID;
@@ -43,6 +45,8 @@ public class PostActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     @BindView(R.id.postProgressBar)
     ProgressBar progressPost;
+    @BindView(R.id.empty_list_layout)
+    LinearLayout emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,8 @@ public class PostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post);
         ButterKnife.bind(this);
         //GET FIREBASE AUTH INSTANCE AND GET USERUID
-        FirebaseAuth.getInstance().addAuthStateListener(fireAuthListener);
+        fireAuth = FirebaseAuth.getInstance();
+        fireAuth.addAuthStateListener(fireAuthListener);
         fireUser = FirebaseAuth.getInstance().getCurrentUser();
         USER_UID = fireUser.getUid();
         //GET DATABAE REFERENCE AND CREATION OF LIST OF POST
@@ -71,7 +76,6 @@ public class PostActivity extends AppCompatActivity {
     private void backToLoginScreen() {
         startActivity(new Intent(PostActivity.this,LoginActivity.class));
         finish();
-        return;
     }
 
     //FUNCTION TO READ DATABASE AND CREATE LIST OF POSTS
@@ -83,8 +87,8 @@ public class PostActivity extends AppCompatActivity {
                 List<Posts> posts = new ArrayList<Posts>();
                 //For each to get data and create list with model Posts.
                 for(DataSnapshot item : dataSnapshot.child(USER_POST_PATH).child(USER_UID).getChildren()){
-                    Posts post = item.getValue(Posts.class);
-                    posts.add(post);
+                   /* Posts post = item.getValue(Posts.class);
+                    posts.add(post);*/
                 }
                 buildListOfPosts(posts);
             }
@@ -100,10 +104,13 @@ public class PostActivity extends AppCompatActivity {
     //METHOD TO BUILD THE RECYCLERVIEW WITH THE ARRAYLIST OF POSTS
     private void buildListOfPosts(List<Posts> posts) {
         progressPost.setVisibility(View.GONE);
-        RecyclerPostAdapter postAdapter = new RecyclerPostAdapter(posts);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(postAdapter);
+        if(!posts.isEmpty()){
+            RecyclerPostAdapter postAdapter = new RecyclerPostAdapter(posts);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(postAdapter);
+        }else
+            emptyView.setVisibility(View.VISIBLE);
     }
 
     //FUNCTION TO CREATE A MESSAGE WITH DATABASE ERROR.
@@ -122,5 +129,30 @@ public class PostActivity extends AppCompatActivity {
                 Toast.makeText(PostActivity.this, getString(R.string.error_firebase_database_unknown), Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        fireAuth.addAuthStateListener(fireAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (fireAuthListener != null) {
+            fireAuth.removeAuthStateListener(fireAuthListener);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fireAuth.signOut();
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

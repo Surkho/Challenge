@@ -15,6 +15,7 @@
     <string name="error_firebase_database_default">Error leyendo la base de datos</string>
     <string name="error_firebase_database_unavaliable">Firebase no disponible</string>
     <string name="error_firebase_database_unknown">Error desconocido</string>
-
+    <!-- OTHER STRINGS USED IN APP-->
+    <string name="empty_list_posts">Lista de posts vacía.</string>
 
 </resources>

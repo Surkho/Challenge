@@ -25,7 +25,7 @@ import butterknife.OnClick;
 public class LoginActivity extends AppCompatActivity {
 
     //FIREBASE OBJECT
-    private FirebaseAuth fbAuth;
+    private FirebaseAuth fireAuth;
 
     //VIEW OBJECTS (USE OF BUTTERKNIFE)
     @BindView(R.id.edPassword)
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        fbAuth = FirebaseAuth.getInstance();
+        fireAuth = FirebaseAuth.getInstance();
         ButterKnife.bind(this);
     }
     /*  BUTTON LOGIN CLICK EVENT (BUTTERKNIFE)
@@ -69,12 +69,16 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener fireAuthListener = new FirebaseAuth.AuthStateListener() {
         @Override
         public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            if(firebaseAuth.getCurrentUser() != null)
+                Log.e("Firebase","User logged");
+            else
+                Log.e("Firebase","User not logged");
 
         }
     };
     //METHOD TO START THE LOGIN WITH PASS AND USER
     private void startLoginWithFirebase(String user, String password){
-        fbAuth.signInWithEmailAndPassword(user,password)
+        fireAuth.signInWithEmailAndPassword(user,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -102,20 +106,19 @@ public class LoginActivity extends AppCompatActivity {
     private void launchPostActivity() {
         startActivity(new Intent(LoginActivity.this,PostActivity.class));
         finish();
-        return;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        fbAuth.addAuthStateListener(fireAuthListener);
+        fireAuth.addAuthStateListener(fireAuthListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         if (fireAuthListener != null) {
-            fbAuth.removeAuthStateListener(fireAuthListener);
+            fireAuth.removeAuthStateListener(fireAuthListener);
         }
     }
 }
