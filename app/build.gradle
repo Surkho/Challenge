@@ -29,7 +29,7 @@ dependencies {
 
     //Firebase
     compile 'com.google.firebase:firebase-auth:9.6.1'
-
+    compile 'com.google.firebase:firebase-database:9.6.1'
     //Butterknife
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'

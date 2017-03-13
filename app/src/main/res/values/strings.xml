@@ -7,8 +7,14 @@
     <string name="button_login">Loguearse </string>
     <string name="error_login_email">Formato e-mail invalido</string>
     <string name="error_login_password">Formato contraseña invalido</string>
-    <!--FIREBASE EXCEPTIONS -->
+    <!--FIREBASE AUTH EXCEPTIONS -->
     <string name="error_firebase_user">Usuario no encontrado</string>
     <string name="error_firebase_pass">Contraseña incorrecta</string>
+    <!--FIREBASE DATABASE EXCEPTIONS -->
+    <string name="error_firebase_database_network">Error con la conexión a internet</string>
+    <string name="error_firebase_database_default">Error leyendo la base de datos</string>
+    <string name="error_firebase_database_unavaliable">Firebase no disponible</string>
+    <string name="error_firebase_database_unknown">Error desconocido</string>
+
 
 </resources>
