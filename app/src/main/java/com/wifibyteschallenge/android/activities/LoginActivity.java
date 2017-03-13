@@ -1,11 +1,16 @@
 package com.wifibyteschallenge.android.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,19 +32,20 @@ public class LoginActivity extends AppCompatActivity {
     EditText edPassword;
     @BindView(R.id.edUser)
     EditText edUser;
-
+    @BindView(R.id.loginProgressBar)
+    ProgressBar progressLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         fbAuth = FirebaseAuth.getInstance();
         ButterKnife.bind(this);
-
     }
     //BUTTON LOGIN CLICK EVENT
     @OnClick(R.id.btnLogin)
     public void OnClick(){
         //CHECKING USER AND PASS WITH VALID FORMAT AND CALL THE METHOD TO GET UID.
+        progressLogin.setVisibility(View.VISIBLE);
         String user,pass;
         user = edUser.getText().toString();
         pass = edPassword.getText().toString();
@@ -47,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         if(Utils.isValidEmail(user) && Utils.isValidPassword(pass))
            getUserUID(user,pass);
         else{
+            progressLogin.setVisibility(View.GONE);
             if (!Utils.isValidEmail(user) && !Utils.isValidEmail(pass))
                 edUser.setError(getString(R.string.error_login_email));
             if (!Utils.isValidPassword(pass))
@@ -69,10 +76,12 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //IF THE VALIDATION IS OK, LAUNCH THE NEW ACTIVITY TO SHOW THE POSTS
                         if(task.isSuccessful()){
-                          launchPostActivity();
+                            progressLogin.setVisibility(View.GONE);
+                            launchPostActivity();
                         }else{
                             //THROW THE EXCEPTION AND SHOW MESSAGE FOR WRONG EMAIL OR WRONG PASSWORD
                             try {
+                                progressLogin.setVisibility(View.GONE);
                                 throw task.getException();
                             } catch(FirebaseAuthInvalidCredentialsException e) {
                                 edPassword.setError(getString(R.string.error_firebase_pass));
