@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "396412423833",
+    "firebase_url": "https://wifibytes-challenge.firebaseio.com",
+    "project_id": "wifibytes-challenge",
+    "storage_bucket": "wifibytes-challenge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396412423833:android:41ce064167b0cb59",
+        "android_client_info": {
+          "package_name": "com.wifibytesChallenge.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "396412423833-nvi8sgdbf2jjre34v1rekubutns8bdtd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBACVPhWXAlhZMkdZfd41UO2n_0buU76XE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

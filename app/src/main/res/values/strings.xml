@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Wifibytes Challenge</string>
+    <!-- LOGIN -->
+    <string name="login_title">WifiBytes S.L</string>
+    <string name="ed_email">E-mail</string>
+    <string name="ed_pass">Contraseña</string>
+    <string name="button_login">Loguearse </string>
+    <string name="error_login_email">Formato e-mail invalido</string>
+    <string name="error_login_password">Formato contraseña invalido</string>
+    <!--FIREBASE EXCEPTIONS -->
+    <string name="error_firebase_user">Usuario no encontrado</string>
+    <string name="error_firebase_pass">Contraseña incorrecta</string>
+
+</resources>
