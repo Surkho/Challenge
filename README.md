@@ -1,6 +1,6 @@
 # _Proyecto_ 
 
-Descripción: Proyecto creado para el reto de WifiBytes para Android nativo. _
+Descripción: Proyecto creado para el reto de WifiBytes para Android nativo.
 
 #_Capturas de pantalla_
 
