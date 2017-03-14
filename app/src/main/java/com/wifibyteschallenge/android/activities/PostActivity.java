@@ -2,11 +2,15 @@ package com.wifibyteschallenge.android.activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -87,8 +91,8 @@ public class PostActivity extends AppCompatActivity {
                 List<Posts> posts = new ArrayList<Posts>();
                 //For each to get data and create list with model Posts.
                 for(DataSnapshot item : dataSnapshot.child(USER_POST_PATH).child(USER_UID).getChildren()){
-                   /* Posts post = item.getValue(Posts.class);
-                    posts.add(post);*/
+                    Posts post = item.getValue(Posts.class);
+                    posts.add(post);
                 }
                 buildListOfPosts(posts);
             }
@@ -116,8 +120,8 @@ public class PostActivity extends AppCompatActivity {
     //FUNCTION TO CREATE A MESSAGE WITH DATABASE ERROR.
     private void createDatabaseErrorMessage(int code) {
         switch (code) {
-            default:
-                Toast.makeText(PostActivity.this, getString(R.string.error_firebase_database_default), Toast.LENGTH_SHORT).show();
+            case Utils.ERROR_DISCONECT:
+                Toast.makeText(PostActivity.this, getString(R.string.error_firebase_database_disconnected), Toast.LENGTH_SHORT).show();
                 break;
             case Utils.ERROR_NETWORK:
                 Toast.makeText(PostActivity.this, getString(R.string.error_firebase_database_network), Toast.LENGTH_SHORT).show();
@@ -128,6 +132,25 @@ public class PostActivity extends AppCompatActivity {
             case Utils.ERROR_UNKNOW:
                 Toast.makeText(PostActivity.this, getString(R.string.error_firebase_database_unknown), Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+    //MENU ACTION BAR
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_post_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                fireAuth.signOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -147,8 +170,9 @@ public class PostActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if(fireAuth.getCurrentUser() != null)
+            fireAuth.signOut();
         super.onDestroy();
-        fireAuth.signOut();
     }
 
     @Override

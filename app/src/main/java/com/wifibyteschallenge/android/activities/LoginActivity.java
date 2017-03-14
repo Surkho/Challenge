@@ -2,6 +2,7 @@ package com.wifibyteschallenge.android.activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -120,5 +121,10 @@ public class LoginActivity extends AppCompatActivity {
         if (fireAuthListener != null) {
             fireAuth.removeAuthStateListener(fireAuthListener);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

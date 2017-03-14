@@ -9,6 +9,7 @@ import android.text.TextUtils;
 public class Utils {
 
     //ERROR_CODE VALUES
+    public static final int ERROR_DISCONECT = -4;
     public static final int ERROR_NETWORK = -24;
     public static final int ERROR_UNKNOW = -999;
     public static final int ERROR_UNAVALAIABLE = -10;
